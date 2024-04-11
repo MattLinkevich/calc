@@ -59,7 +59,7 @@ func intToRoman(num int) string {
     return result
 }
 
-func solve(input string) int{	
+func solve(input string) string{	
 	sign := ""
 
 	for i := 0; i < len(input); i++ {
@@ -69,8 +69,7 @@ func solve(input string) int{
 			if isInvalid {
 				sign = input[i : i+1]
 			} else {
-				fmt.Println("Выдача паники, так как формат математической операции не удовлетворяет заданию.")
-				return 0
+				panic("Выдача паники, так как формат математической операции не удовлетворяет заданию.")
 			}
 		}
 	}
@@ -80,8 +79,7 @@ func solve(input string) int{
 		isNull := splitted[0] == "0" || splitted[1] == "0"
 
 		if isNull {
-			fmt.Println("Выдача паники, так как строка содержит ноль.")
-			return 0
+			panic("Выдача паники, так как строка содержит ноль.")
 		}
 
 		left, _ := strconv.Atoi(splitted[0])
@@ -93,11 +91,9 @@ func solve(input string) int{
 		if isArabic {
 			isInInterval := left > 0 && left < 11 && right > 0 && right < 11
 			if isInInterval {
-				fmt.Println(calculate(left, right, sign))
-				return 1
+				return strconv.Itoa(calculate(left, right, sign)) 
 			} else {
-				fmt.Println("Выдача паники, так как строка содержит число вне интервала [1...10].")
-				return 0
+				panic("Выдача паники, так как строка содержит число вне интервала [1...10].")
 			}
 		} else if isRoman {
 			left = romanToInt(splitted[0])
@@ -106,27 +102,22 @@ func solve(input string) int{
 			if isInInterval {
 				res := calculate(left, right, sign)
 				if res > 0 {
-					fmt.Println(intToRoman(res))
-					return 1
+					return intToRoman(res)
 				} else {
-					fmt.Println("Выдача паники, так как в римской системе нет отрицательных чисел.")
-					return 0
+					panic("Выдача паники, так как в римской системе нет отрицательных чисел.")
 				}
 			} else {
-				fmt.Println("Выдача паники, так как строка содержит число вне интервала [1...10].")
-				return 0
+				panic("Выдача паники, так как строка содержит число вне интервала [1...10].")
 			}
 
 			
 		} else {
-			fmt.Println("Выдача паники, так как используются одновременно разные системы счисления.")
-			return 0
+			panic("Выдача паники, так как используются одновременно разные системы счисления.")
 		}
 
 		
 	} else {
-		fmt.Println("Выдача паники, так как строка не является математической операцией.")
-		return 0
+		panic("Выдача паники, так как строка не является математической операцией.")
 	}
 }
 
@@ -140,6 +131,6 @@ func main() {
 		input = strings.Replace(input, " ", "", -1)
 
 		fmt.Println("Output:")
-		solve(input)
+		fmt.Println(solve(input))
 	}
 }
